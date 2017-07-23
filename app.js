@@ -1,13 +1,14 @@
 // Dependencies
 // =============================================================
-var express = require("express");
-var bodyParser = require("body-parser");
-var path = require("path");
+const express = require("express");
+const bodyParser = require("body-parser");
+const path = require("path");
+const email = require('./email.js')
 
 // Sets up the Express App
 // =============================================================
-var app = express();
-var PORT = process.env.PORT || 3000;
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Sets up the Express app to handle data parsing
 app.use(bodyParser.json());
@@ -17,11 +18,11 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
 // Reservations (DATA)
 // =============================================================
-var reservations = [{
+let reservations = [{
   //routeName: "yoda",
   name: "John",
   phone: "(216) 555-5555",
-  email: 'email@email.com',
+  email: 'dabadestboy1@gmail.com',
   id: 1
 },
 {
@@ -32,8 +33,12 @@ var reservations = [{
   id: 2
 }];
 
+let waitlist = [];
+
 // Routes
 // =============================================================
+
+app.use('/assets', express.static(__dirname + '/public'))
 
 // Basic route that sends the user first to the AJAX Page
 app.get("/", function(req, res) {
@@ -70,12 +75,25 @@ app.post("/reserve", function(req, res) {
   res.redirect('/tables');
 
   console.log(newReservation);
-
-  reservations.push(newReservation);
+  
+  if(reservations.length < 5){
+    reservations.push(newReservation);
+  }
+  else{
+    waitlist.push(newReservation);
+  }
 
   res.json(newReservation);
   
 });
+
+app.post('/tables/email', function(req, res){
+  var newEmailAddress = req.body;
+  
+  console.log(newEmailAddress);
+  
+  email(newEmailAddress.email);
+})
 
 // Starts the server to begin listening
 // =============================================================

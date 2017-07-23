@@ -75,18 +75,19 @@
     
 
   $.get("/reservations", function(data) {
-    console.log(data);
+  
     if (data) {
       
       data.forEach(function(data){
         var dataHolder = $('<div>').addClass('panel-body');
         var entry = $('<div>');
-        console.log(entry, data.name)
-        //$("#stats").show();
+
         $('<h3>').addClass("name").html('<strong>Name:</strong>'+data.name).appendTo(entry);
         $("<h3>").addClass("phone").html('<strong>Phone:</strong>'+data.phone).appendTo(entry);
         $("<h3>").addClass("email").html('<strong>Email:</strong>'+data.email).appendTo(entry);
         $("<h3>").addClass("id").html('<strong>ID:</strong>'+data.id).appendTo(entry);
+        $("<button>").addClass("email btn btn-primary").text('Send Email').attr('href','/tables/email').data('email', data.email).appendTo(entry);
+        $("<button>").addClass("txt btn btn-warning").text('Send Text').attr('href','/tables/txt').appendTo(entry);
         entry.appendTo(dataHolder);
         dataHolder.appendTo('.table-data');
       })
@@ -97,6 +98,17 @@
       $("#stats").hide();
     }
   });
+    
+    
+     $(document).on('click' , '.email', function(event) {
+      
+       let emailAddress = {email:$(this).data('email')}
+
+      $.post("/tables/email", emailAddress)
+      .done(function(data) {
+        console.log(data);
+      });
+    });
 
   </script>
 </body>

@@ -62,17 +62,17 @@
   </div>
 
   <script type="text/javascript">
-    // Question: What does this code do?
+    
     $("#add-btn").on("click", function(event) {
       event.preventDefault();
       var newReservation = {
         name: $("#name").val().trim(),
         phone: $("#phone").val().trim(),
-        email: $("#email").val().trim()
+        email: $("#email").val().trim(),
         id: $("#id").val().trim()
       };
 
-      // Question: What does this code do??
+
       $.post("/reserve", newReservation)
       .done(function(data) {
         console.log(data);
