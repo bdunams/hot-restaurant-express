@@ -11,6 +11,6 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
-    "nodemailer": "^4.0.1"
+    "nodemailer": "^9.0.1"
   }
 }
